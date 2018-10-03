@@ -6,66 +6,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>Client Cal</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<style>
+		.form-group label {
+		    font-size: 15px;
+		}
+	</style>
 </head>
 <body>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-6 col-sm-12">
+			<div class="col-sm-12">
 				<form id="form-calc">
-					<!-- 1 -->
-					<div class="form-group">
-						<label>Online ads</label>
-						<select id="ol-ads" class="form-control">
-							<option value="No Ads"></option>
-							<option value="Google AdWords">Google AdWords</option>
-							<option class="Facebook">Facebook</option>
-						</select>
+					<div class="row">
+						<div class="form-group p-2"">
+							<label>Your Name</label>
+							<input id="client-name" class="form-control" value="John Doe">
+						</div>
+						<!-- 1 -->
+						<div class="form-group p-2"">
+							<label>Online ads</label>
+							<select id="ol-ads" class="form-control">
+								<option value="No Ads"></option>
+								<option value="Google AdWords">Google AdWords</option>
+								<option class="Facebook">Facebook</option>
+							</select>
+						</div>
 					</div>
-					<!-- 2 -->
-					<div class="form-group">
-						<label>Total monthly advertising spent</label>
-						<input id="ttl-monthly" class="form-control" value="10,000">
+					<div class="row input-fields">
+						
+						<!-- 2 -->
+						<div class="form-group p-2"">
+							<label>Total monthly advertising spent</label>
+							<input id="ttl-monthly" class="form-control" value="10,000">
+						</div>
+						<!-- 3 -->
+						<div class="form-group p-2"">
+							<label>Total number of impressions during this period</label>
+							<input id="ttl-imp" class="form-control" value="16,590">
+						</div>
+						<!-- 4 -->
+						<div class="form-group p-2"">
+							<label>Total number of ad clicks in a month</label>
+							<input id="ttl-clck" class="form-control" value="500">
+						</div>
+						<!-- 5 -->
+						<div class="form-group p-2"">
+							<label>Total number of leads</label>
+							<input id="ttl-lead" class="form-control" value="100">
+						</div>
+						<!-- 6 -->
+						<div class="form-group p-2"">
+							<label>Total number of leads contacted</label>
+							<input id="ttl-lead-cont" class="form-control" value="50">
+						</div>
+						<!-- 7 -->
+						<div class="form-group p-2"">
+							<label>Total number of retainers sent out</label>
+							<input id="ttl-retain" class="form-control" value="10">
+						</div>
+						<!-- 8 -->
+						<div class="form-group p-2"">
+							<label>Total number of retainers returned</label>
+							<input id="ttl-ret-return" class="form-control" value="5">
+						</div>
+						<!-- 9 -->
+						<div class="form-group p-2"">
+							<label>What is their target CPA (cost to acquire a new client)</label>
+							<input id="ttl-cpa" class="form-control" value="1,000">
+						</div>
 					</div>
-					<!-- 3 -->
-					<div class="form-group">
-						<label>Total number of impressions during this period</label>
-						<input id="ttl-imp" class="form-control" value="16,590">
-					</div>
-					<!-- 4 -->
-					<div class="form-group">
-						<label>Total number of ad clicks in a month</label>
-						<input id="ttl-clck" class="form-control" value="500">
-					</div>
-					<!-- 5 -->
-					<div class="form-group">
-						<label>Total number of leads</label>
-						<input id="ttl-lead" class="form-control" value="100">
-					</div>
-					<!-- 6 -->
-					<div class="form-group">
-						<label>Total number of leads contacted</label>
-						<input id="ttl-lead-cont" class="form-control" value="50">
-					</div>
-					<!-- 7 -->
-					<div class="form-group">
-						<label>Total number of retainers sent out</label>
-						<input id="ttl-retain" class="form-control" value="10">
-					</div>
-					<!-- 8 -->
-					<div class="form-group">
-						<label>Total number of retainers returned</label>
-						<input id="ttl-ret-return" class="form-control" value="5">
-					</div>
-					<!-- 9 -->
-					<div class="form-group">
-						<label>What is their target CPA (cost to acquire a new client)</label>
-						<input id="ttl-cpa" class="form-control" value="1,000">
-					</div>
+					
 					<button type="button" id="calc-input" class="btn btn-primary btn-lg btn-block">Submit</button>
 				</form>
 			</div>
-			<div class="col-md-6 col-sm-12">
-				<div id="calc-res"></div>
+			<div class="col-sm-12">
+				<div id="calc-res" style="display: none;"></div>
+				<div id="calc-res-calculated"></div>
 			</div>
 			
 		</div>
@@ -89,34 +105,41 @@
 		var ttl_cpa = $('#ttl-cpa').val().replace(/,/g,'');
 
 
-		$('#calc-res').empty();
-		$('#calc-res').append('<p>Advertising online: <br><b>' + ol_ads + '</b></p>');
-		$('#calc-res').append('<p>Total monthly advertising spent: <br><b>$ ' + ttl_monthly + '</b></p>');
-		$('#calc-res').append('<p>Total number of impressions during this period: <br><b>' + ttl_imp + '</b></p>');
-		$('#calc-res').append('<p>Total number of ad clicks in a month: <br><b>' + ttl_clck + '</b></p>');
-		$('#calc-res').append('<p>Total number of leads: <br><b>' + ttl_lead + '</b></p>');
-		$('#calc-res').append('<p>Total number of leads contacted: <br><b>' + ttl_lead_cont + '</b></p>');
-		$('#calc-res').append('<p>Total number of retainers sent out: <br><b>' + ttl_retain_out + '</b></p>');
-		$('#calc-res').append('<p>Total number of retainers returned: <br><b>' + ttl_retain_return + '</b></p>');
-		$('#calc-res').append('<p>What is their target CPA (cost to acquire a new client): <br><b>$ ' + ttl_cpa + '</b></p>');
+		$('#calc-res, #calc-res-calculated').empty();
+		$('#calc-res').append('<p>Advertising online: <br><b> ' + ol_ads + ' </b></p>');
+		$('#calc-res').append('<p>Total monthly advertising spent: <br><b>$ <span class="num">' + ttl_monthly + '</span> </b></p>');
+		$('#calc-res').append('<p>Total number of impressions during this period: <br><b> <span class="num">' + ttl_imp + '</span> </b></p>');
+		$('#calc-res').append('<p>Total number of ad clicks in a month: <br><b> <span class="num">' + ttl_clck + '</span> </b></p>');
+		$('#calc-res').append('<p>Total number of leads: <br><b> <span class="num">' + ttl_lead + '</span> </b></p>');
+		$('#calc-res').append('<p>Total number of leads contacted: <br><b> <span class="num">' + ttl_lead_cont + '</span> </b></p>');
+		$('#calc-res').append('<p>Total number of retainers sent out: <br><b> <span class="num">' + ttl_retain_out + '</span> </b></p>');
+		$('#calc-res').append('<p>Total number of retainers returned: <br><b> <span class="num">' + ttl_retain_return + '</span> </b></p>');
+		$('#calc-res').append('<p>What is their target CPA (cost to acquire a new client): <br><b>$ <span class="num">' + ttl_cpa + '</span> </b></p>');
 
 
-		var click_rate = parseInt(ttl_clck) / parseInt(ttl_imp); 
-		var lead_con_rate = parseInt(ttl_lead) / parseInt(ttl_clck);
+		var click_rate = Math.round(( parseFloat(ttl_clck) / parseFloat(ttl_imp) ) * 100); 
+		var lead_con_rate = Math.round(( parseFloat(ttl_lead) / parseFloat(ttl_clck) ) * 100);
 		var cost_pr_lead = parseInt(ttl_monthly) / parseInt(ttl_lead);
-		var cont_rate = parseInt(ttl_lead_cont) / parseInt(ttl_lead);
-		var ratainer_ret_rate = parseInt(ttl_retain_return) / parseInt(ttl_retain_out);
+		var cont_rate = Math.round(( parseFloat(ttl_lead_cont) / parseFloat(ttl_lead) ) * 100);
+		var ratainer_ret_rate = Math.round(( parseFloat(ttl_retain_return) / parseFloat(ttl_retain_out) ) * 100);
 		var cpa = parseInt(ttl_monthly) / parseInt(ttl_retain_return);
 		var client_spent = parseInt(cpa) - parseInt(ttl_cpa);
-		//alert(click_rate);
+		//alert(cont_rate);
 
-		$('#calc-res').append('<p>Click-through rate <br><b>' + click_rate + ' %</b></p>');
-		$('#calc-res').append('<p>Lead Conversation rate <br><b>' + lead_con_rate + ' %</b></p>');
-		$('#calc-res').append('<p>Cost Per Lead <br><b>' + cost_pr_lead + '</b></p>');
-		$('#calc-res').append('<p>Contact Rate <br><b>' + cost_pr_lead + ' %</b></p>');
-		$('#calc-res').append('<p>Retainer Return Rate <br><b>' + ratainer_ret_rate + '</b></p>');
-		$('#calc-res').append('<p>Cost Per New Client or CPA <br><b>' + cpa + '</b></p>');
-		$('#calc-res').append('<p>In the scenario above, the CPA is <b>$' + cpa + '</b> and the target CPA they want to hit is <b>$' + ttl_cpa + '</b>. Which means they spent <b>$' + client_spent + '</b> more.</p>');
+		$('#calc-res-calculated').append('<hr><h3>RESULT</h3><br><p>Click-through Rate <b>' + click_rate + ' %</b></p>');
+		$('#calc-res-calculated').append('<p>Lead Conversation Rate <b>' + lead_con_rate + ' %</b></p>');
+		$('#calc-res-calculated').append('<p>Cost Per Lead <b><span class="num">' + cost_pr_lead + '</span></b></p>');
+		$('#calc-res-calculated').append('<p>Contact Rate <b>' + cont_rate + ' %</b></p>');
+		$('#calc-res-calculated').append('<p>Retainer Return Rate <b>' + ratainer_ret_rate + ' %</b></p>');
+		$('#calc-res-calculated').append('<p>Cost Per New Client or CPA <b><span class="num">' + cpa + '</span></b></p>');
+		$('#calc-res-calculated').append('<p>In the scenario above, the CPA is <b>$<span class="num">' + cpa + '</span></b> and the target CPA they want to hit is <b>$<span class="num">' + ttl_cpa + '</span></b>. Which means they spent <b>$<span class="num">' + client_spent + '</span></b> more.</p>');
+
+		$.fn.digits = function(){ 
+			return this.each(function(){ 
+				$(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") ); 
+			})
+		}
+		$("span.num").digits();
 
 	});
 </script>
