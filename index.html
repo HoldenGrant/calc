@@ -79,11 +79,17 @@
 					<button type="button" id="calc-input" class="btn btn-primary btn-lg btn-block">Submit</button>
 				</form>
 			</div>
-			<div class="col-sm-12">
-				<div id="calc-res" style="display: none;"></div>
+		</div>
+		<div class="row mt-3 pb-5">
+			<hr>
+			<div class=col-md-6 col-sm-12">
+				<div id="calc-res"></div>
 				<div id="calc-res-calculated"></div>
 			</div>
-			
+			<div class=col-md-6 col-sm-12">
+				
+				<div id="calc-res-statement"></div>
+			</div>
 		</div>
 	</div>
 </body>
@@ -94,45 +100,72 @@
 
 <script>
 	$('#calc-input').on('click', function(){
+		var client_name = $('#client-name').val();
 		var ol_ads = $('#ol-ads').val();
 		var ttl_monthly = $('#ttl-monthly').val().replace(/,/g,'');
 		var ttl_imp = $('#ttl-imp').val().replace(/,/g,'');
 		var ttl_clck = $('#ttl-clck').val().replace(/,/g,'');
 		var ttl_lead = $('#ttl-lead').val().replace(/,/g,'');
 		var ttl_lead_cont = $('#ttl-lead-cont').val().replace(/,/g,'');
+		var ttl_lead_cont_dbl = parseFloat(ttl_lead_cont) * 2;
 		var ttl_retain_out = $('#ttl-retain').val().replace(/,/g,'');
 		var ttl_retain_return = $('#ttl-ret-return').val().replace(/,/g,'');
+		var ttl_retain_return_dbl = parseFloat(ttl_retain_return) * 2;
 		var ttl_cpa = $('#ttl-cpa').val().replace(/,/g,'');
 
 
 		$('#calc-res, #calc-res-calculated').empty();
-		$('#calc-res').append('<p>Advertising online: <br><b> ' + ol_ads + ' </b></p>');
-		$('#calc-res').append('<p>Total monthly advertising spent: <br><b>$ <span class="num">' + ttl_monthly + '</span> </b></p>');
-		$('#calc-res').append('<p>Total number of impressions during this period: <br><b> <span class="num">' + ttl_imp + '</span> </b></p>');
-		$('#calc-res').append('<p>Total number of ad clicks in a month: <br><b> <span class="num">' + ttl_clck + '</span> </b></p>');
-		$('#calc-res').append('<p>Total number of leads: <br><b> <span class="num">' + ttl_lead + '</span> </b></p>');
-		$('#calc-res').append('<p>Total number of leads contacted: <br><b> <span class="num">' + ttl_lead_cont + '</span> </b></p>');
-		$('#calc-res').append('<p>Total number of retainers sent out: <br><b> <span class="num">' + ttl_retain_out + '</span> </b></p>');
-		$('#calc-res').append('<p>Total number of retainers returned: <br><b> <span class="num">' + ttl_retain_return + '</span> </b></p>');
-		$('#calc-res').append('<p>What is their target CPA (cost to acquire a new client): <br><b>$ <span class="num">' + ttl_cpa + '</span> </b></p>');
+		$('#calc-res').append('<p>Advertising online: <b> ' + ol_ads + ' </b></p>');
+		$('#calc-res').append('<p>Total monthly advertising spent: <b>$ <span class="num">' + ttl_monthly + '</span> </b></p>');
+		$('#calc-res').append('<p>Total number of impressions during this period: <b> <span class="num">' + ttl_imp + '</span> </b></p>');
+		$('#calc-res').append('<p>Total number of ad clicks in a month: <b> <span class="num">' + ttl_clck + '</span> </b></p>');
+		$('#calc-res').append('<p>Total number of leads: <b> <span class="num">' + ttl_lead + '</span> </b></p>');
+		$('#calc-res').append('<p>Total number of leads contacted: <b> <span class="num">' + ttl_lead_cont + '</span> </b></p>');
+		$('#calc-res').append('<p>Total number of retainers sent out: <b> <span class="num">' + ttl_retain_out + '</span> </b></p>');
+		$('#calc-res').append('<p>Total number of retainers returned: <b> <span class="num">' + ttl_retain_return + '</span> </b></p>');
+		$('#calc-res').append('<p>What is their target CPA (cost to acquire a new client): <b>$ <span class="num">' + ttl_cpa + '</span> </b></p>');
 
 
-		var click_rate = Math.round(( parseFloat(ttl_clck) / parseFloat(ttl_imp) ) * 100); 
+		var click_rate = Math.round(( parseFloat(ttl_clck) / parseFloat(ttl_imp) ) * 100);
+		var click_rate_dbl =  parseFloat(click_rate) * 2;
+
 		var lead_con_rate = Math.round(( parseFloat(ttl_lead) / parseFloat(ttl_clck) ) * 100);
+		var lead_con_rate_dbl = parseFloat(lead_con_rate) * 2;
+
 		var cost_pr_lead = parseInt(ttl_monthly) / parseInt(ttl_lead);
 		var cont_rate = Math.round(( parseFloat(ttl_lead_cont) / parseFloat(ttl_lead) ) * 100);
-		var ratainer_ret_rate = Math.round(( parseFloat(ttl_retain_return) / parseFloat(ttl_retain_out) ) * 100);
+		var ratainer_ret_rate = parseFloat(ttl_retain_return) / parseFloat(ttl_retain_out);
 		var cpa = parseInt(ttl_monthly) / parseInt(ttl_retain_return);
 		var client_spent = parseInt(cpa) - parseInt(ttl_cpa);
 		//alert(cont_rate);
 
-		$('#calc-res-calculated').append('<hr><h3>RESULT</h3><br><p>Click-through Rate <b>' + click_rate + ' %</b></p>');
+		$('#calc-res-calculated').append('<h3>RESULT</h3><br><p>Click-through Rate <b>' + click_rate + ' %</b></p>');
 		$('#calc-res-calculated').append('<p>Lead Conversation Rate <b>' + lead_con_rate + ' %</b></p>');
 		$('#calc-res-calculated').append('<p>Cost Per Lead <b><span class="num">' + cost_pr_lead + '</span></b></p>');
 		$('#calc-res-calculated').append('<p>Contact Rate <b>' + cont_rate + ' %</b></p>');
-		$('#calc-res-calculated').append('<p>Retainer Return Rate <b>' + ratainer_ret_rate + ' %</b></p>');
+		$('#calc-res-calculated').append('<p>Retainer Return Rate <b>' + ratainer_ret_rate + '</b></p>');
 		$('#calc-res-calculated').append('<p>Cost Per New Client or CPA <b><span class="num">' + cpa + '</span></b></p>');
 		$('#calc-res-calculated').append('<p>In the scenario above, the CPA is <b>$<span class="num">' + cpa + '</span></b> and the target CPA they want to hit is <b>$<span class="num">' + ttl_cpa + '</span></b>. Which means they spent <b>$<span class="num">' + client_spent + '</span></b> more.</p>');
+
+		
+
+		if( parseInt(cpa) > parseInt(ttl_cpa) ) {
+			//alert("test");
+			$('#calc-res-statement').append('<p> Hi <b>' + client_name + '</b>, it looks like you are spending <b>$<span class="num">' + cpa + '</span></b> more than what you want to pay to acquire a new client. Based on the numbers you enterred, your current CPA is <b>$<span class="num">' + cpa + '</span></b> and you only want to spend a maximum of <b>$<span class="num">' + ttl_cpa + '</span>.</p>');
+			$('#calc-res-statement').append('<p>To hit your goal of <b>$<span class="num">' + ttl_cpa + '</span> </b> for each new client you need to:</p>');
+			$('#calc-res-statement').append('<p>- increase your CTR to <b>' + click_rate_dbl + '%</b> from <b>' + click_rate + '%</b>, or</p>');
+			$('#calc-res-statement').append('<p>- increase your lead converation rate to <b>' + lead_con_rate_dbl + '%</b> from <b>' + lead_con_rate + '%</b>, or</p>');
+			$('#calc-res-statement').append('<p>- succesfully contact <b>' + ttl_lead_cont_dbl + '</b> instead of <b>' + ttl_lead_cont + '</b></p>');
+			$('#calc-res-statement').append('<p>- increase returned retainers to  <b>' + ttl_retain_return_dbl + '</b> from <b>' + ttl_retain_return + '</b></p>');
+			$('#calc-res-statement').append('<p>Assuming your pipeline variables stay constant, small improvements of any of the key metrics above will contribute to meeting your target CPA.</p><p>If you would like to a customized plan on meeting your CPA, please contact us through the form below. (then show a form for them to use)</p>');
+		} else if( parseInt(cpa) <= parseInt(ttl_cpa) ) {
+			//alert("tset");
+			$('#calc-res-statement').append('<p>Great work, <b>' + client_name + '</b>! It looks like you are doing a great job with your campaign. You can get even more clients by increasing your monthly ad budget. Assuming your pipeline variables stay constant, small improvements of any of the key metrics above will contribute to meeting your target CPA.</p>');
+			$('#calc-res-statement').append('<p>If you would like to a customized plan on scaling campaigns and getting more clients, please contact us through the form below. (then show a form for them to use)</p>');
+			$('#calc-res-statement').append('<p>We can setup a formula on excel spreadsheet for this, which automatically caclulates the figures described above.</p>');
+			$('#calc-res-statement').append('<p>The end goal is to help them see what aspect of their sales-marketing pipeline needs fixing, and we can fix it for them to help them meet their CPA target.</p>');
+			$('#calc-res-statement').append('<p>Please let me know if you have questions. We can brainstorm this further.</p>');
+		}
 
 		$.fn.digits = function(){ 
 			return this.each(function(){ 
