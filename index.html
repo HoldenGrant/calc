@@ -87,7 +87,6 @@
 				<div id="calc-res-calculated"></div>
 			</div>
 			<div class=col-md-6 col-sm-12">
-				
 				<div id="calc-res-statement"></div>
 			</div>
 		</div>
@@ -114,7 +113,7 @@
 		var ttl_cpa = $('#ttl-cpa').val().replace(/,/g,'');
 
 
-		$('#calc-res, #calc-res-calculated').empty();
+		$('#calc-res, #calc-res-calculated, #calc-res-statement').empty();
 		$('#calc-res').append('<p>Advertising online: <b> ' + ol_ads + ' </b></p>');
 		$('#calc-res').append('<p>Total monthly advertising spent: <b>$ <span class="num">' + ttl_monthly + '</span> </b></p>');
 		$('#calc-res').append('<p>Total number of impressions during this period: <b> <span class="num">' + ttl_imp + '</span> </b></p>');
