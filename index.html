@@ -31,6 +31,11 @@
 								<option class="Facebook">Facebook</option>
 							</select>
 						</div>
+						<!-- 9 -->
+						<div class="form-group p-2"">
+							<label>What is their target CPA (cost to acquire a new client)</label>
+							<input id="ttl-cpa" class="form-control" value="1,000">
+						</div>
 					</div>
 					<div class="row input-fields">
 						
@@ -69,11 +74,7 @@
 							<label>Total number of retainers returned</label>
 							<input id="ttl-ret-return" class="form-control" value="5">
 						</div>
-						<!-- 9 -->
-						<div class="form-group p-2"">
-							<label>What is their target CPA (cost to acquire a new client)</label>
-							<input id="ttl-cpa" class="form-control" value="1,000">
-						</div>
+						
 					</div>
 					
 					<button type="button" id="calc-input" class="btn btn-primary btn-lg btn-block">Submit</button>
@@ -133,24 +134,38 @@
 
 		var cost_pr_lead = parseInt(ttl_monthly) / parseInt(ttl_lead);
 		var cont_rate = Math.round(( parseFloat(ttl_lead_cont) / parseFloat(ttl_lead) ) * 100);
-		var ratainer_ret_rate = parseFloat(ttl_retain_return) / parseFloat(ttl_retain_out);
+		var ratainer_ret_rate = Math.round((parseFloat(ttl_retain_return) / parseFloat(ttl_retain_out)) * 100);
 		var cpa = parseInt(ttl_monthly) / parseInt(ttl_retain_return);
-		var client_spent = parseInt(cpa) - parseInt(ttl_cpa);
+		var client_spent = Math.round(parseFloat(cpa) - parseFloat(ttl_cpa));
 		//alert(cont_rate);
+		alert( (ttl_monthly).toFixed(2) );
+		//function saveSpent(){
+			
 
-		$('#calc-res-calculated').append('<h3>RESULT</h3><br><p>Click-through Rate <b>' + click_rate + ' %</b></p>');
-		$('#calc-res-calculated').append('<p>Lead Conversation Rate <b>' + lead_con_rate + ' %</b></p>');
+		//}
+		
+
+		$('#calc-res-calculated').append('<h3>RESULT</h3><br><p>Click-through Rate <b>' + click_rate + '%</b></p>');
+		$('#calc-res-calculated').append('<p>Lead Conversation Rate <b>' + lead_con_rate + '%</b></p>');
 		$('#calc-res-calculated').append('<p>Cost Per Lead <b><span class="num">' + cost_pr_lead + '</span></b></p>');
-		$('#calc-res-calculated').append('<p>Contact Rate <b>' + cont_rate + ' %</b></p>');
-		$('#calc-res-calculated').append('<p>Retainer Return Rate <b>' + ratainer_ret_rate + '</b></p>');
-		$('#calc-res-calculated').append('<p>Cost Per New Client or CPA <b><span class="num">' + cpa + '</span></b></p>');
-		$('#calc-res-calculated').append('<p>In the scenario above, the CPA is <b>$<span class="num">' + cpa + '</span></b> and the target CPA they want to hit is <b>$<span class="num">' + ttl_cpa + '</span></b>. Which means they spent <b>$<span class="num">' + client_spent + '</span></b> more.</p>');
+		$('#calc-res-calculated').append('<p>Contact Rate <b>' + cont_rate + '%</b></p>');
+		$('#calc-res-calculated').append('<p>Retainer Return Rate <b>' + ratainer_ret_rate + '%</b></p>');
+		$('#calc-res-calculated').append('<p>Cost Per New Client or CPA <b>$<span class="num">' + cpa + '</span></b></p>');
+		
+		if( parseInt(cpa) > parseInt(ttl_cpa) ) {
+			//var save = "save";
+			$('#calc-res-calculated').append('<p>In the scenario above, the CPA is <b>$<span class="num">' + cpa + '</span></b> and the target CPA they want to hit is <b>$<span class="num">' + ttl_cpa + '</span></b>. Which means they spent <b>$<span class="num">' + Math.abs(client_spent) + '</span></b> more.</p>');
+
+		}else if( parseInt(cpa) <= parseInt(ttl_cpa) ) {
+			//var spent = "spent"
+			$('#calc-res-calculated').append('<p>In the scenario above, the CPA is <b>$<span class="num">' + cpa + '</span></b> and the target CPA they want to hit is <b>$<span class="num">' + ttl_cpa + '</span></b>. Which means they save <b>$<span class="num">' + Math.abs(client_spent) + '</span></b> more.</p>');
+		}
 
 		
 
 		if( parseInt(cpa) > parseInt(ttl_cpa) ) {
 			//alert("test");
-			$('#calc-res-statement').append('<p> Hi <b>' + client_name + '</b>, it looks like you are spending <b>$<span class="num">' + cpa + '</span></b> more than what you want to pay to acquire a new client. Based on the numbers you enterred, your current CPA is <b>$<span class="num">' + cpa + '</span></b> and you only want to spend a maximum of <b>$<span class="num">' + ttl_cpa + '</span>.</p>');
+			$('#calc-res-statement').append('<p> Hi <b>' + client_name + '</b>, it looks like you are spending <b>$<span class="num">' + client_spent + '</span></b> more than what you want to pay to acquire a new client. Based on the numbers you enterred, your current CPA is <b>$<span class="num">' + cpa + '</span></b> and you only want to spend a maximum of <b>$<span class="num">' + ttl_cpa + '</span>.</p>');
 			$('#calc-res-statement').append('<p>To hit your goal of <b>$<span class="num">' + ttl_cpa + '</span> </b> for each new client you need to:</p>');
 			$('#calc-res-statement').append('<p>- increase your CTR to <b>' + click_rate_dbl + '%</b> from <b>' + click_rate + '%</b>, or</p>');
 			$('#calc-res-statement').append('<p>- increase your lead converation rate to <b>' + lead_con_rate_dbl + '%</b> from <b>' + lead_con_rate + '%</b>, or</p>');
