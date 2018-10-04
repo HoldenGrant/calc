@@ -37,6 +37,8 @@
 							<input id="ttl-cpa" class="form-control" value="1,000">
 						</div>
 					</div>
+					<!-- <input id="num" type="text" />
+					<input type="button" id="btnformat" value="Format Number" /> -->
 					<div class="row input-fields">
 						
 						<!-- 2 -->
@@ -99,6 +101,18 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 <script>
+// 	$(function () {
+//     $('#btnformat').on('click', function () {
+//         var x = $('#num').val();
+//         $('#num').val(addCommas(x));
+//     });
+// });
+ 
+// function addCommas(x) {
+//     var parts = x.toString().split(".");
+//     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+//     return parts.join(".");
+// }
 	$('#calc-input').on('click', function(){
 		var client_name = $('#client-name').val();
 		var ol_ads = $('#ol-ads').val();
@@ -112,6 +126,8 @@
 		var ttl_retain_return = $('#ttl-ret-return').val().replace(/,/g,'');
 		var ttl_retain_return_dbl = parseFloat(ttl_retain_return) * 2;
 		var ttl_cpa = parseFloat($('#ttl-cpa').val().replace(/,/g,'')).toFixed(2);
+
+		
 
 
 		$('#calc-res, #calc-res-calculated, #calc-res-statement').empty();
@@ -136,11 +152,15 @@
 		var cont_rate = Math.round(( parseFloat(ttl_lead_cont) / parseFloat(ttl_lead) ) * 100);
 		var ratainer_ret_rate = Math.round((parseFloat(ttl_retain_return) / parseFloat(ttl_retain_out)) * 100);
 		var cpa = parseFloat(ttl_monthly) / parseFloat(ttl_retain_return);
-		var client_spent = Math.round(parseFloat(cpa) - parseFloat(ttl_cpa));
+		var client_spent = Math.round(parseFloat(cpa).toFixed(2) - parseFloat(ttl_cpa).toFixed(2));
 		//var client_spent_rev = Math.round(parseFloat(ttl_cpa) - parseFloat(cpa));
-		var abs = parseFloat(client_spent);
+		var my_cpa = parseFloat(cpa).toFixed(2);
+		var calc_cpa = parseFloat(ttl_cpa).toFixed(2);
+		var res_cpa = my_cpa - calc_cpa;
 		//alert(cont_rate);
-		alert(parseFloat(client_spent).toFixed(2) );
+		// alert(parseFloat(cpa).toFixed(2));
+		// alert(parseFloat(ttl_cpa).toFixed(2));
+		// alert(res_cpa);
 		//function saveSpent(){
 			
 
@@ -149,25 +169,25 @@
 
 		$('#calc-res-calculated').append('<h3>RESULT</h3><br><p>Click-through Rate <b>' + click_rate + '%</b></p>');
 		$('#calc-res-calculated').append('<p>Lead Conversation Rate <b>' + lead_con_rate + '%</b></p>');
-		$('#calc-res-calculated').append('<p>Cost Per Lead <b><span class="num">' + cost_pr_lead + '</span></b></p>');
+		$('#calc-res-calculated').append('<p>Cost Per Lead <b>$<span class="num">' + cost_pr_lead + '</span></b></p>');
 		$('#calc-res-calculated').append('<p>Contact Rate <b>' + cont_rate + '%</b></p>');
 		$('#calc-res-calculated').append('<p>Retainer Return Rate <b>' + ratainer_ret_rate + '%</b></p>');
 		$('#calc-res-calculated').append('<p>Cost Per New Client or CPA <b>$<span class="num">' + parseFloat(cpa).toFixed(2) + '</span></b></p>');
 		
 		if( parseFloat(cpa) > parseFloat(ttl_cpa) ) {
-			//var save = "save";
-			$('#calc-res-calculated').append('<p>In the scenario above, the CPA is <b>$<span class="num">' + parseFloat(cpa).toFixed(2) + '</span></b> and the target CPA they want to hit is <b>$<span class="num">' + parseFloat(ttl_cpa).toFixed(2)  + '</span></b>. Which means they spent <b>$<span class="num">' +  Math.abs(client_spent).toFixed(2) + '</span></b> more.</p>');
+			//var save = "spent";
+			$('#calc-res-calculated').append('<p>In the scenario above, the CPA is <b>$<span class="num">' + parseFloat(cpa).toFixed(2) + '</span></b> and the target CPA they want to hit is <b>$<span class="num">' + parseFloat(ttl_cpa).toFixed(2)  + '</span></b>. Which means they spent <b>$<span class="num">' +  parseFloat(res_cpa).toFixed(2) + '</span></b> more.</p>');
 
 		}else if( parseFloat(cpa) <= parseFloat(ttl_cpa) ) {
-			//var spent = "spent"
-			$('#calc-res-calculated').append('<p>In the scenario above, the CPA is <b>$<span class="num">' + parseFloat(cpa).toFixed(2) + '</span></b> and the target CPA they want to hit is <b>$<span class="num">' + parseFloat(ttl_cpa).toFixed(2)  + '</span></b>. Which means they save <b>$<span class="num">' + Math.abs(client_spent).toFixed(2)  + '</span></b> more.</p>');
+			//var spent = "save"
+			$('#calc-res-calculated').append('<p>In the scenario above, the CPA is <b>$<span class="num">' + parseFloat(cpa).toFixed(2) + '</span></b> and the target CPA they want to hit is <b>$<span class="num">' + parseFloat(ttl_cpa).toFixed(2)  + '</span></b>. Which means they save <b>$<span class="num">' + Math.abs(parseFloat(res_cpa).toFixed(2))  + '</span></b> more.</p>');
 		}
 
 		
 
 		if( parseFloat(cpa) > parseFloat(ttl_cpa) ) {
 			//alert("test");
-			$('#calc-res-statement').append('<p> Hi <b>' + client_name + '</b>, it looks like you are spending <b>$<span class="num">' + Math.abs(client_spent).toFixed(2) + '</span></b> more than what you want to pay to acquire a new client. Based on the numbers you enterred, your current CPA is <b>$<span class="num">' + parseFloat(cpa).toFixed(2) + '</span></b> and you only want to spend a maximum of <b>$<span class="num">' + parseFloat(ttl_cpa).toFixed(2) + '</span>.</p>');
+			$('#calc-res-statement').append('<p> Hi <b>' + client_name + '</b>, it looks like you are spending <b>$<span class="num">' + parseFloat(res_cpa).toFixed(2) + '</span></b> more than what you want to pay to acquire a new client. Based on the numbers you enterred, your current CPA is <b>$<span class="num">' + parseFloat(cpa).toFixed(2) + '</span></b> and you only want to spend a maximum of <b>$<span class="num">' + parseFloat(ttl_cpa).toFixed(2) + '</span>.</p>');
 			$('#calc-res-statement').append('<p>To hit your goal of <b>$<span class="num">' + parseFloat(ttl_cpa).toFixed(2) + '</span> </b> for each new client you need to:</p>');
 			$('#calc-res-statement').append('<p>- increase your CTR to <b>' + click_rate_dbl + '%</b> from <b>' + click_rate + '%</b>, or</p>');
 			$('#calc-res-statement').append('<p>- increase your lead converation rate to <b>' + lead_con_rate_dbl + '%</b> from <b>' + lead_con_rate + '%</b>, or</p>');
