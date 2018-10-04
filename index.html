@@ -10,6 +10,12 @@
 		.form-group label {
 		    font-size: 15px;
 		}
+		.modal-lg {
+		    max-width: 1200px;
+		}
+		.small-font{
+			font-size: 12px;
+		}
 	</style>
 </head>
 <body>
@@ -65,6 +71,9 @@
 						<div class="form-group p-2"">
 							<label>Total number of leads contacted</label>
 							<input id="ttl-lead-cont" class="form-control" value="50">
+							<div class="small-font d-none ttl-lead-cont-error">
+								<p>Must be less than the total number of leads</p>
+							</div>
 						</div>
 						<!-- 7 -->
 						<div class="form-group p-2"">
@@ -75,11 +84,51 @@
 						<div class="form-group p-2"">
 							<label>Total number of retainers returned</label>
 							<input id="ttl-ret-return" class="form-control" value="5">
+							<div class="small-font d-none ttl-ret-return-error">
+								<p>Must be less than the total number of retainers sent out</p>
+							</div>
 						</div>
-						
 					</div>
 					
-					<button type="button" id="calc-input" class="btn btn-primary btn-lg btn-block">Submit</button>
+					<div class="row">
+						<div class="col-md-6 col-sm-12">
+							<button type="button" id="calc-input" class="btn btn-primary btn-lg btn-block">Submit</button>
+							<!-- <button type="button" id="calc-input" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target=".bd-example-modal-lg">Submit</button> -->
+						</div>
+						<div class="col-md-6 col-sm-12">
+							<button type="button" class="btn btn-danger btn-lg btn-block clear-data">Clear</button>
+						</div>
+					</div>
+					
+
+					<!-- <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+					  <div class="modal-dialog modal-lg">
+					    <div class="modal-content">
+					    	<div class="modal-header">
+						        <h5 class="modal-title">Result</h5>
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						          <span aria-hidden="true">&times;</span>
+						        </button>
+						    </div>
+						    <div class="modal-body">
+						    	<div class="container p-0">
+						    		<div class="row mt-3 p-0">
+										<div class=col-md-6 col-sm-12">
+											<div id="calc-res-calculated"></div>
+										</div>
+										<div class=col-md-6 col-sm-12">
+											<div id="calc-res-statement"></div>
+										</div>
+									</div>
+						    	</div>
+						    </div>
+						    <div class="modal-footer">
+						    	<button type="button" class="btn btn-primary">Contact Us</button>
+						    	<button type="button" class="btn btn-secondary clear-data" data-dismiss="modal">Close</button>
+						    </div>
+					    </div>
+					  </div>
+					</div> -->
 				</form>
 			</div>
 		</div>
@@ -113,6 +162,11 @@
 //     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 //     return parts.join(".");
 // }
+	
+	
+	$('.clear-data').on('click', function(){
+		$('#calc-res, #calc-res-calculated, #calc-res-statement').empty();
+	});
 	$('#calc-input').on('click', function(){
 		var client_name = $('#client-name').val();
 		var ol_ads = $('#ol-ads').val();
@@ -127,6 +181,28 @@
 		var ttl_retain_return_dbl = parseFloat(ttl_retain_return) * 2;
 		var ttl_cpa = parseFloat($('#ttl-cpa').val().replace(/,/g,'')).toFixed(2);
 
+		
+		if ( parseFloat(ttl_retain_return) > parseFloat(ttl_retain_out) ) {
+			$('.ttl-ret-return-error').addClass('d-block');
+			$('.ttl-ret-return-error').removeClass('d-none');
+			
+			$('#calc-res, #calc-res-calculated, #calc-res-statement').empty();
+			return false;
+		} else if ( parseFloat(ttl_retain_return) <= parseFloat(ttl_retain_out) ) {
+			$('.ttl-ret-return-error').removeClass('d-block');
+			$('.ttl-ret-return-error').addClass('d-none');
+		}
+
+		if ( parseFloat(ttl_lead_cont) > parseFloat(ttl_lead) ) {
+			$('.ttl-lead-cont-error').addClass('d-block');
+			$('.ttl-lead-cont-error').removeClass('d-none');
+			
+			$('#calc-res, #calc-res-calculated, #calc-res-statement').empty();
+			return false;
+		} else if ( parseFloat(ttl_lead_cont) <= parseFloat(ttl_lead) ) {
+			$('.ttl-lead-cont-error').removeClass('d-block');
+			$('.ttl-lead-cont-error').addClass('d-none');
+		}
 		
 
 
